@@ -1,0 +1,8 @@
+/*
+	Users List
+	Format: 
+	"username" : "password"
+*/
+exports.user = {
+
+};
