@@ -42,7 +42,6 @@ For client the QCache replies with JSON response while for the application serve
  ```
  
 * Sessions, but how?
-
-Currently QCache only supports php but I will extend its support to other languages too. For php, it looks for the session file under ```/tmp``` directory and then maps the valid session keys into the file.
+ - Currently QCache only supports php but I will extend its support to other languages too. For php, it looks for the session file under ```/tmp``` directory and then maps the valid session keys into the file.
 
 
