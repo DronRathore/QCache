@@ -6,5 +6,6 @@ exports.config = {
 	sessionKeyPlace: false,
 	session: "php",
 	sessionName: "furlant",
-	port: 8080
+	port: 81,
+	keyToUse: ""
 };

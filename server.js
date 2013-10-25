@@ -6,7 +6,7 @@ var config = require("./config/config.js").config;
 var parser = require("parser").parser;
 var cooker = require("cooker").cooker;
 var database = require("database").database;
-var server = require("net");
+var server = require("server").server;
 console.log("\n QTCache ver 1rev0.1\n\n [*] Starting Server...");
 
 /*
@@ -26,6 +26,13 @@ http.createServer(function(request, response){
 				Read the command and execute it :)
 			*/
 			var command = parseURL(request.url);
+			 if ( command.command == "get" ) {
+				var data = database.get(_key, command.data);
+				if ( typeof(data) == "object" )
+					data = data.toString();
+				response.end("{data={\n\t"+command.data+":"+data+"\n}}", "utf-8");
+			}
+			
 			response.end("{data={\n\tsuccess:1\n}}", "utf-8");
 			console.log(" [=] serving ends for "+_key.substr(0, 4)+"");
 		} else {
@@ -44,12 +51,27 @@ http.createServer(function(request, response){
 	A Simple TCP listener
 */
 
-server.createServer(function(){
+server.init(function(data, socket){
 		/*
-			Lets listen for the server
+			Parse Commands and perform the action
+		*/
+		var parse = new parser();
+		var parts = parse.explode(data, " ");
+		console.log(parts);
+	try{
+		switch (parts[0]) {
+			case "add": database.add(parts[1], parts[2], parts[3]);socket.write("200");break;
+			case "delete": database.remove(parts[1], parts[2]);socket.write("200");break;
+			case "update": database.update(parts[1], parts[2], parts[3]);socket.write("200");break;
+			case "get": var data = (database.get(parts[1], parts[2])).toString()+"\0";socket.write(data);break;
+		}
+	}catch(e){
+		/*
+			Wanna Do Something? Then add here. :P
 		*/
 		
-});
+	}
+}, 8080);
 
 
 console.log(" [*] Running at port "+config.port+"\n [*] to shutdown press CTRL+c\n++++++++++++++++++++++++++++++++++++++++++++++++++\n");
