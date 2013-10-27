@@ -4,7 +4,7 @@ QCache
 * Under Construction, mind your coding
  
 
-A modern era Memory Cache using nodejs technology
+A modern era Session Based Memory Cache using nodejs technology
 
 ## What is it?
 
